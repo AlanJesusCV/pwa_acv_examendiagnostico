@@ -82,28 +82,41 @@
             });
             document.getElementById('datos').innerHTML = cuerpo;
         });
-    
+
     function registrar() {
         let data = {
             name: document.getElementById("first_name").value,
             job: document.getElementById("rol").value
         }
         console.log(data);
+        if (data.name === "" & data.job === "") {
+            swal({
+                title: "Campos incompletos",
+                text: "Es necesario llenar los campos solicitados para registrar",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            });            
+            return false;
+        }
+        else {
+            fetch('https://reqres.in/api/users', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
 
-        fetch('https://reqres.in/api/users', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
+            })
+                .then(response => response.json())
+                .catch(error => console.error('Error: ', error))
+                .then(response => console.log('Success: ', response
 
-        })
-            .then(response => response.json())
-            .catch(error => console.error('Error: ', error))
-            .then(response => console.log('Success: ', response
-           
-            ))
+                ))
             swal("Registro exitoso, para validar revise la consola", "Da click para continuar", "success");
             document.getElementById("first_name").value = "";
             document.getElementById("rol").value = ""
+            return true;
+        }
+
     }
 
 </script>
